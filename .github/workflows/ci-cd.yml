@@ -6,9 +6,7 @@ on:
   pull_request:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages-${{ github.ref }}
@@ -39,21 +37,17 @@ jobs:
           fi
           echo "키 노출 없음"
 
-  # CD: main 브랜치에 머지되면 GitHub Pages로 자동 배포
+  # CD: main 브랜치에 머지되면 gh-pages 브랜치로 정적 파일 배포
+  # (gh-pages 브랜치 방식은 GITHUB_TOKEN의 contents:write 권한만으로 동작)
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     needs: ci
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
+      - name: gh-pages 브랜치로 배포
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          enablement: true
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          exclude_assets: '.github'
