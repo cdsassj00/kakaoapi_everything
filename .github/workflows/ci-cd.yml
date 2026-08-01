@@ -6,11 +6,7 @@ on:
   pull_request:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: pages-${{ github.ref }}
-  cancel-in-progress: false
+  contents: read
 
 jobs:
   # CI: 문법 및 기본 검증
@@ -37,17 +33,5 @@ jobs:
           fi
           echo "키 노출 없음"
 
-  # CD: main 브랜치에 머지되면 gh-pages 브랜치로 정적 파일 배포
-  # (gh-pages 브랜치 방식은 GITHUB_TOKEN의 contents:write 권한만으로 동작)
-  deploy:
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    needs: ci
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: gh-pages 브랜치로 배포
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
-          exclude_assets: '.github'
+  # CD: GitHub Pages를 "Deploy from a branch → main"으로 설정하면
+  # main에 머지될 때마다 GitHub이 자동으로 사이트를 갱신합니다 (별도 잡 불필요).
