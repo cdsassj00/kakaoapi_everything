@@ -37,10 +37,10 @@ python3 -m http.server 8000
 GitHub Actions 파이프라인(`.github/workflows/ci-cd.yml`)이 포함되어 있습니다.
 
 - **CI**: PR/푸시 시 JS 문법 검사, HTML 필수 요소 검사, 키 노출 검사 자동 실행
-- **CD**: `main` 브랜치에 머지되면 GitHub Pages로 자동 배포
+- **CD**: `main` 브랜치에서 GitHub Pages가 직접 서빙 (머지하면 자동 갱신)
 
-최초 1회만 저장소 **Settings → Pages → Source**를 **GitHub Actions**로 설정하세요.
-이후에는 main에 머지될 때마다 자동으로 배포됩니다.
+최초 1회만 저장소 **Settings → Pages**에서 Source를 **Deploy from a branch**,
+브랜치를 **main / (root)**로 설정하세요. 이후에는 main에 머지될 때마다 자동 반영됩니다.
 
 배포 후:
 1. 배포 URL 도메인을 카카오 앱의 플랫폼(Web)과 Redirect URI에 등록
