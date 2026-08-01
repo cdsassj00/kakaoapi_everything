@@ -33,10 +33,18 @@ python3 -m http.server 8000
 # http://localhost:8000 접속
 ```
 
-### 3. 배포 (GitHub Pages)
-1. 저장소 **Settings → Pages** → Deploy from a branch → `main` / root
-2. 배포 URL 도메인을 카카오 앱의 플랫폼(Web)과 Redirect URI에 등록
-3. 배포된 페이지의 **설정** 탭에서 JavaScript 키 입력 후 테스트
+### 3. 배포 (CI/CD 자동 배포)
+GitHub Actions 파이프라인(`.github/workflows/ci-cd.yml`)이 포함되어 있습니다.
+
+- **CI**: PR/푸시 시 JS 문법 검사, HTML 필수 요소 검사, 키 노출 검사 자동 실행
+- **CD**: `main` 브랜치에 머지되면 GitHub Pages로 자동 배포
+
+최초 1회만 저장소 **Settings → Pages → Source**를 **GitHub Actions**로 설정하세요.
+이후에는 main에 머지될 때마다 자동으로 배포됩니다.
+
+배포 후:
+1. 배포 URL 도메인을 카카오 앱의 플랫폼(Web)과 Redirect URI에 등록
+2. 배포된 페이지의 **설정** 탭에서 JavaScript 키 입력 후 테스트
 
 ## 주의사항
 
